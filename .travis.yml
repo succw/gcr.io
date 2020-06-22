@@ -14,6 +14,11 @@ script:
       image_name=${image#*/}
       image_name=${image_name%@*}
       docker pull $image
+      echo "$image"
+      echo "---"
+      echo "$DOCKER_REGISTRY/gcr.io/$image_name"
       docker tag $image $DOCKER_REGISTRY/gcr.io/$image_name
+      
+      echo "$DOCKER_REGISTRY/gcr.io/$image_name"
       docker push $DOCKER_REGISTRY/gcr.io/$image_name
     done
