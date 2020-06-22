@@ -2,9 +2,12 @@ language: bash
 
 services:
   - docker
+env:
+  global:
+    - DOCKER_HUB=succw
 
 before_script:
-  - echo "$DOCKER_PASSWORD" | docker login cz.d4s.top:9443 -u "$DOCKER_USERNAME" --password-stdin
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
  
 script:
   - echo "start pull and retag and push"
@@ -14,7 +17,6 @@ script:
       image_name=${image#*/}
       image_name=${image_name%@*}
       docker pull $image
-
-      docker tag $image cz.d4s.top:9443/gcr.io/$image_name
-      docker push cz.d4s.top:9443/gcr.io/$image_name
+      docker tag $image $DOCKER_HUB/gcr.io/$image_name
+      docker push $DOCKER_HUB/gcr.io/$image_name
     done
